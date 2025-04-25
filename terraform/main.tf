@@ -1,15 +1,8 @@
 terraform {
   backend "s3" {
-    bucket         = "terraform-states123456"
-    key            = "portfolio-blog/terraform.tfstate"
-    kms_key_id     = "arn:aws:kms:us-east-2:148761668913:key/687ac8fc-ec91-490a-92a4-07de2937366d"
-    encrypt        = true
-    region         = "us-east-2"
-    profile        = "account1"
-    use_lockfile = true
+    # No parameters here - they'll come from the .tfbackend file
   }
 }
-
 provider "aws" {
   region = "us-east-2"
   

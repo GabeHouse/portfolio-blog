@@ -1,0 +1,5 @@
+bucket = "terraform-states123456"
+key = "portfolio-blog/terraform.tfstate" 
+region = "us-east-2"
+encrypt = true
+profile = "account
