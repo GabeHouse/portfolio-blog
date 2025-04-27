@@ -37,6 +37,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::264509227929:role/blog_role
           aws-region: us-east-2
+          debug-logging: true
       
       - name: Terraform Init
         run: |
