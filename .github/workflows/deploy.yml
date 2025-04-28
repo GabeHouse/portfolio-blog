@@ -41,6 +41,11 @@ jobs:
           role-to-assume: arn:aws:iam::264509227929:role/blog_role
           aws-region: us-east-2
       
+      - name: Force Unlock
+        run: |
+          cd terraform
+          terraform force-unlock b572684e-9b4c-0255-6590-a7860a7a64c9
+
       - name: Verify AWS Identity
         run: aws sts get-caller-identity
         shell: bash
