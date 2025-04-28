@@ -15,7 +15,7 @@ provider "aws" {
 
   
   # This will work if you're using the OIDC method above
-  assume_role {
+  assume_role_with_web_identity {
     role_arn     = "arn:aws:iam::264509227929:role/blog_role"
     session_name = "TerraformSession"
   }
