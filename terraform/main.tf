@@ -4,7 +4,6 @@ terraform {
     key            = "portfolio-blog/terraform.tfstate"
     encrypt        = true
     region         = "us-east-2"
-    profile        = "account1"
     use_lockfile   = true
   }
 }
