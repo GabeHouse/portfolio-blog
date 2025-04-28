@@ -45,7 +45,7 @@ jobs:
         run: aws sts get-caller-identity
         shell: bash
 
-      - name: Terraform Init
+      - name: Terraform Init (Debug)
         run: |
           cd terraform
           terraform init --debug -migrate-state
