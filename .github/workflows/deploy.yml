@@ -48,7 +48,8 @@ jobs:
       - name: Terraform Init (Debug)
         run: |
           cd terraform
-          terraform init --debug -migrate-state
+          TF_LOG=DEBUG terraform init -no-color &gt; terraform_init_debug.log 2&gt;&amp;1
+          cat terraform_init_debug.log
       
       - name: Terraform Plan
         run: |
