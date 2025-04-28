@@ -44,11 +44,11 @@ jobs:
       - name: Verify AWS Identity
         run: aws sts get-caller-identity
         shell: bash
-        
+
       - name: Terraform Init
         run: |
           cd terraform
-          terraform init \
+          terraform init --debug \
             -backend-config="bucket=terraform-states123456" \
             -backend-config="key=portfolio-blog/terraform.tfstate" \
             -backend-config="region=us-east-2" \
