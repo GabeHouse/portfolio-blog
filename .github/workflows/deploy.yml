@@ -46,10 +46,11 @@ jobs:
         shell: bash
 
       - name: Terraform Init (Debug)
+        shell: pwsh
         run: |
           cd terraform
-          TF_LOG=DEBUG terraform init -no-color &gt; terraform_init_debug.log 2&gt;&amp;1
-          cat terraform_init_debug.log
+          $env:TF_LOG = "DEBUG"
+          terraform init -no-color
       
       - name: Terraform Plan
         run: |
