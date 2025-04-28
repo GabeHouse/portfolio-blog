@@ -41,6 +41,10 @@ jobs:
           role-to-assume: arn:aws:iam::264509227929:role/blog_role
           aws-region: us-east-2
       
+      - name: Verify AWS Identity
+        run: aws sts get-caller-identity
+        shell: bash
+        
       - name: Terraform Init
         run: |
           cd terraform
