@@ -14,29 +14,28 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-      
+        uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-      
+
       - name: Install dependencies
         run: npm install
-      
+
       - name: Build
         run: npm run build
-      
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: '1.11.0'
-      
+
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v3
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::264509227929:role/blog_role
           aws-region: us-east-2
@@ -46,18 +45,21 @@ jobs:
         shell: bash
 
       - name: Terraform Init (Debug)
-        shell: pwsh
         run: |
           cd terraform
-          $env:TF_LOG = "DEBUG"
-          terraform init -no-color
-      
+          terraform init -no-color -input=false
+        shell: bash
+        env:
+          TF_LOG: "DEBUG"
+
       - name: Terraform Plan
         run: |
           cd terraform
-          terraform plan -out=tfplan
-      
+          terraform plan -no-color -out=tfplan -input=false
+        shell: bash
+
       - name: Terraform Apply
         run: |
           cd terraform
-          terraform apply -auto-approve tfplan
+          terraform apply -no-color -auto-approve tfplan
+        shell: bash
