@@ -13,6 +13,7 @@ provider "aws" {
   
   # Use profile only when running locally, not in CI/CD
   profile = terraform.workspace == "default" ? "account2" : null
+
   
   # This will work if you're using the OIDC method above
   assume_role {
@@ -33,12 +34,12 @@ resource "aws_s3_bucket" "website_bucket" {
 }
 
 resource "aws_s3_object" "website_files" {
-  for_each = fileset("${path.module}/../../dist", "**/*")
+  for_each = fileset("${path.module}/../dist", "**/*")
 
   bucket       = aws_s3_bucket.website_bucket.id
   key          = each.value
-  source       = "${path.module}/../../dist/${each.value}"
-  etag         = filemd5("${path.module}/../../dist/${each.value}")
+  source       = "${path.module}/../dist/${each.value}"
+  etag         = filemd5("${path.module}/../dist/${each.value}")
   content_type = lookup(local.mime_types, regex("\\.[^.]+$", each.value), null)
 }
 
@@ -160,14 +161,14 @@ data "aws_iam_policy_document" "s3_bucket_policy" {
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
-      values   = [aws_cloudfront_origin_access_control.s3_oac.id]
+      values   = [aws_cloudfront_distribution.website_cdn.arn]
     }
   }
 }
 
 resource "null_resource" "cloudfront_invalidation" {
   triggers = {
-    file_hashes         = sha256(join("", [for file in fileset("${path.module}/../../dist", "**/*") : filesha256("${path.module}/../../dist/${file}")])),
+    file_hashes         = sha256(join("", [for file in fileset("${path.module}/../dist", "**/*") : filesha256("${path.module}/../dist/${file}")])),
     distribution_id     = aws_cloudfront_distribution.website_cdn.id
   }
 
