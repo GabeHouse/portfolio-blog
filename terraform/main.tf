@@ -167,16 +167,17 @@ data "aws_iam_policy_document" "s3_bucket_policy" {
 
 resource "null_resource" "cloudfront_invalidation" {
   triggers = {
-    # This will trigger an invalidation whenever any file changes
-    file_hashes = sha256(join("", [for file in fileset("${path.module}/../../dist", "**/*") : filesha256("${path.module}/../../dist/${file}")]))
+    file_hashes         = sha256(join("", [for file in fileset("${path.module}/../../dist", "**/*") : filesha256("${path.module}/../../dist/${file}")])),
+    distribution_id     = aws_cloudfront_distribution.website_cdn.id
   }
 
   provisioner "local-exec" {
-    command = "aws cloudfront create-invalidation --distribution-id ${aws_cloudfront_distribution.website_cdn.id} --paths '/*'"
+    command = "aws cloudfront create-invalidation --distribution-id ${self.triggers.distribution_id} --paths '/*'"
   }
 
   depends_on = [aws_s3_object.website_files]
 }
+
 
 output "s3_bucket_name" {
   value = aws_s3_bucket.website_bucket.id
