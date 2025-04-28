@@ -12,7 +12,6 @@ provider "aws" {
   region = "us-east-2"
   
   # Use profile only when running locally, not in CI/CD
-  profile = terraform.workspace == "default" ? "account2" : null
 
   
   # This will work if you're using the OIDC method above
