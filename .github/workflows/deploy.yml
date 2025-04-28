@@ -48,11 +48,7 @@ jobs:
       - name: Terraform Init
         run: |
           cd terraform
-          terraform init --debug \
-            -backend-config="bucket=terraform-states123456" \
-            -backend-config="key=portfolio-blog/terraform.tfstate" \
-            -backend-config="region=us-east-2" \
-            -backend-config="encrypt=true"
+          terraform init -migrate-state
       
       - name: Terraform Plan
         run: |
